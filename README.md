@@ -84,9 +84,13 @@ Dependensi utama: `pyspark==4.3.0`, `pandas==2.2.3`, `matplotlib==3.10.1`, `matp
 
 ### 4. Unduh dataset
 
-1. Buka halaman dataset di Figshare:
-   [Amazon Review Polarity — Figshare](https://figshare.com/articles/dataset/Amazon_Review_Polarity/13232501?file=25484027)
-2. Unduh file dataset-nya. Jika berbentuk arsip (`.zip` / `.tgz`), ekstrak terlebih dahulu.
+Project ini memakai `train.csv` dan `test.csv` dari Kaggle sebagai sumber utama. Dataset lengkapnya juga tersedia di Figshare (lihat [Opsi B](#opsi-b-dataset-lengkap-dari-figshare)).
+
+#### Opsi A: Kaggle (disarankan)
+
+1. Buka halaman dataset di Kaggle (perlu login):
+   [Amazon reviews — Kaggle](https://www.kaggle.com/datasets/kritanjalijain/amazon-reviews?select=train.csv)
+2. Klik **Download**, lalu ekstrak file `.zip`-nya sehingga kamu mendapatkan `train.csv` dan `test.csv`.
 3. Buat folder `datasets/` di root project, lalu pindahkan `train.csv` dan `test.csv` ke dalamnya:
 
 **Linux / macOS**
@@ -114,6 +118,23 @@ amazon-reviews-polarity/
     └── test.csv
 ```
 
+**(Opsional) Unduh lewat Kaggle CLI** — memerlukan API token Kaggle (`kaggle.json`) yang sudah terpasang:
+
+```bash
+pip install kaggle
+kaggle datasets download -d kritanjalijain/amazon-reviews -p datasets --unzip
+```
+
+#### Opsi B: Dataset lengkap dari Figshare
+
+Jika kamu membutuhkan dataset lengkapnya, unduh dari Figshare:
+
+1. Buka [Amazon Review Polarity — Figshare](https://figshare.com/articles/dataset/Amazon_Review_Polarity/13232501?file=25484027).
+2. Unduh file dataset-nya. Jika berbentuk arsip (`.zip` / `.tgz`), ekstrak terlebih dahulu.
+3. Pindahkan `train.csv` dan `test.csv` ke folder `datasets/` seperti pada Opsi A.
+
+> Apa pun sumbernya, notebook mengharapkan file bernama `train.csv` dan `test.csv` langsung di dalam `datasets/`.
+
 ### 5. Jalankan notebook
 
 ```bash
@@ -139,6 +160,7 @@ Jika ingin menjalankan per tahap, gunakan notebook di folder `test/` (urutan `01
 
 ## Tentang Dataset
 
+- Sumber utama: [Kaggle — Amazon reviews](https://www.kaggle.com/datasets/kritanjalijain/amazon-reviews) (`train.csv` dan `test.csv`). Dataset lengkapnya tersedia di [Figshare](https://figshare.com/articles/dataset/Amazon_Review_Polarity/13232501?file=25484027).
 - Ulasan produk Amazon dengan dua kelas: skor 1–2 sebagai **negatif**, skor 4–5 sebagai **positif** (skor 3 tidak disertakan).
 - Umumnya terdiri dari 3.600.000 data latih dan 400.000 data uji.
 - Kolom: `label` (1 = negatif, 2 = positif), `title`, dan `text`.
