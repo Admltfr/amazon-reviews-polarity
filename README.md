@@ -17,11 +17,6 @@ Project Big Data & AI yang mengklasifikasikan ulasan produk Amazon menjadi **neg
 amazon-reviews-polarity/
 ├── datasets/                  # (dibuat manual, di-ignore git) letakkan train.csv & test.csv di sini
 ├── images/                    # Gambar hasil visualisasi (EDA, n-gram, panjang teks)
-├── test/                      # Versi notebook yang dipecah per tahap
-│   ├── 01_data_ingestion.ipynb
-│   ├── 02_data_exploration_and_preprocessing.ipynb
-│   ├── 03_model_pipelines_and_evaluation.ipynb
-│   └── requirements.txt
 ├── main.ipynb                 # Notebook utama (end-to-end)
 ├── requirements.txt           # Dependensi Python
 └── README.md
@@ -91,8 +86,6 @@ Klik **Run All**, atau jalankan sel satu per satu dari atas.
 - Sel inisialisasi membuat `SparkSession` (`spark`) dan `SparkContext` (`sc`).
 
 > ⚠️ Jalankan sel **secara berurutan dari atas**. Variabel `spark` dan `sc` dibuat di sel inisialisasi, sehingga sel di bawahnya akan error (`NameError`) jika sel tersebut dilewati.
-
-Jika ingin menjalankan per tahap, gunakan notebook di folder `test/` (urutan `01` → `02` → `03`). Notebook tersebut membaca data dari `../datasets/`, jadi `datasets/` tetap harus berada di root project.
 
 ## Alur Notebook
 
