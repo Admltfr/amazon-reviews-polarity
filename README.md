@@ -27,7 +27,7 @@ amazon-reviews-polarity/
 └── README.md
 ```
 
-> Folder `datasets/` tercantum di `.gitignore`, jadi **tidak ikut ter-clone**. Folder ini harus dibuat sendiri dan diisi dengan dataset (lihat langkah 4).
+> Folder `datasets/` tercantum di `.gitignore`, jadi **tidak ikut ter-clone**. Folder ini harus dibuat sendiri dan diisi dengan dataset (lihat langkah 2).
 
 ## Prasyarat
 
@@ -37,9 +37,9 @@ amazon-reviews-polarity/
 | **Java (JDK)** | JDK 17 atau 21 — wajib untuk menjalankan Spark. Pastikan `java -version` berjalan |
 | **RAM** | Minimal 8 GB disarankan. Spark dikonfigurasi `spark.driver.memory = 4g` |
 | **Disk** | Beberapa GB kosong untuk dataset dan direktori sementara Spark |
-| **Jupyter** | Jupyter Notebook/Lab, atau VS Code dengan ekstensi Jupyter |
+| **Editor notebook** | VS Code (ekstensi **Python** dan **Jupyter**) atau Jupyter Notebook/Lab |
 
-Cek versi yang terpasang:
+Cek versi yang terpasang lewat terminal:
 
 ```bash
 python --version
@@ -48,66 +48,24 @@ java -version
 
 ## Cara Startup
 
-### 1. Clone repository
+Seluruh project dijalankan langsung dari `main.ipynb`. Dependensi dipasang otomatis oleh sel pertama di notebook, jadi tidak perlu menjalankan `pip install` secara manual.
+
+### 1. Dapatkan project
+
+Clone repository:
 
 ```bash
 git clone https://github.com/Admltfr/amazon-reviews-polarity.git
-cd amazon-reviews-polarity
 ```
 
-### 2. Buat dan aktifkan virtual environment
+Atau unduh sebagai ZIP dari GitHub, lalu ekstrak.
 
-**Linux / macOS**
+### 2. Unduh dataset dari Kaggle
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-**Windows (PowerShell)**
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-```
-
-### 3. Install dependensi
-
-```bash
-pip install -r requirements.txt
-pip install notebook      # jika belum punya Jupyter
-```
-
-Dependensi utama: `pyspark==4.3.0`, `pandas==2.2.3`, `matplotlib==3.10.1`, `matplotlib-inline==0.1.7`, `scikit-learn==1.6.1`.
-
-> Sel inisialisasi di `main.ipynb` juga menjalankan `%pip install -r requirements.txt`, tetapi tetap disarankan memasangnya lebih dulu di virtual environment.
-
-### 4. Unduh dataset
-
-Project ini memakai `train.csv` dan `test.csv` dari Kaggle sebagai sumber utama. Dataset lengkapnya juga tersedia di Figshare (lihat [Opsi B](#opsi-b-dataset-lengkap-dari-figshare)).
-
-#### Opsi A: Kaggle (disarankan)
-
-1. Buka halaman dataset di Kaggle (perlu login):
+1. Buka halaman dataset (perlu login Kaggle):
    [Amazon reviews — Kaggle](https://www.kaggle.com/datasets/kritanjalijain/amazon-reviews?select=train.csv)
 2. Klik **Download**, lalu ekstrak file `.zip`-nya sehingga kamu mendapatkan `train.csv` dan `test.csv`.
-3. Buat folder `datasets/` di root project, lalu pindahkan `train.csv` dan `test.csv` ke dalamnya:
-
-**Linux / macOS**
-
-```bash
-mkdir -p datasets
-mv /path/ke/hasil-ekstrak/train.csv datasets/
-mv /path/ke/hasil-ekstrak/test.csv  datasets/
-```
-
-**Windows (PowerShell)**
-
-```powershell
-mkdir datasets
-Move-Item C:\path\ke\hasil-ekstrak\train.csv datasets\
-Move-Item C:\path\ke\hasil-ekstrak\test.csv  datasets\
-```
+3. Buat folder `datasets/` di dalam folder project, lalu letakkan kedua file itu di sana.
 
 Struktur akhirnya harus seperti ini:
 
@@ -118,30 +76,19 @@ amazon-reviews-polarity/
     └── test.csv
 ```
 
-**(Opsional) Unduh lewat Kaggle CLI** — memerlukan API token Kaggle (`kaggle.json`) yang sudah terpasang:
+### 3. Buka `main.ipynb`
 
-```bash
-pip install kaggle
-kaggle datasets download -d kritanjalijain/amazon-reviews -p datasets --unzip
-```
+- **VS Code:** buka folder project (`File → Open Folder`), lalu buka `main.ipynb`.
+- **Jupyter:** jalankan `jupyter notebook` dari dalam folder project, lalu buka `main.ipynb`.
 
-#### Opsi B: Dataset lengkap dari Figshare
+Pilih kernel Python 3.10+ di pojok kanan atas notebook. Jika VS Code meminta memasang `ipykernel`, setujui.
 
-Jika kamu membutuhkan dataset lengkapnya, unduh dari Figshare:
+### 4. Jalankan semua sel
 
-1. Buka [Amazon Review Polarity — Figshare](https://figshare.com/articles/dataset/Amazon_Review_Polarity/13232501?file=25484027).
-2. Unduh file dataset-nya. Jika berbentuk arsip (`.zip` / `.tgz`), ekstrak terlebih dahulu.
-3. Pindahkan `train.csv` dan `test.csv` ke folder `datasets/` seperti pada Opsi A.
+Klik **Run All**, atau jalankan sel satu per satu dari atas.
 
-> Apa pun sumbernya, notebook mengharapkan file bernama `train.csv` dan `test.csv` langsung di dalam `datasets/`.
-
-### 5. Jalankan notebook
-
-```bash
-jupyter notebook main.ipynb
-```
-
-Atau buka `main.ipynb` di VS Code, pilih kernel dari `.venv`, lalu **Run All**.
+- Sel pertama menjalankan `%pip install -r requirements.txt` (PySpark, pandas, matplotlib, scikit-learn). **Restart kernel** jika notebook memintanya setelah instalasi, lalu jalankan ulang dari atas.
+- Sel inisialisasi membuat `SparkSession` (`spark`) dan `SparkContext` (`sc`).
 
 > ⚠️ Jalankan sel **secara berurutan dari atas**. Variabel `spark` dan `sc` dibuat di sel inisialisasi, sehingga sel di bawahnya akan error (`NameError`) jika sel tersebut dilewati.
 
@@ -160,18 +107,21 @@ Jika ingin menjalankan per tahap, gunakan notebook di folder `test/` (urutan `01
 
 ## Tentang Dataset
 
-- Sumber utama: [Kaggle — Amazon reviews](https://www.kaggle.com/datasets/kritanjalijain/amazon-reviews) (`train.csv` dan `test.csv`). Dataset lengkapnya tersedia di [Figshare](https://figshare.com/articles/dataset/Amazon_Review_Polarity/13232501?file=25484027).
+- Sumber: [Kaggle — Amazon reviews](https://www.kaggle.com/datasets/kritanjalijain/amazon-reviews) (`train.csv` dan `test.csv`).
 - Ulasan produk Amazon dengan dua kelas: skor 1–2 sebagai **negatif**, skor 4–5 sebagai **positif** (skor 3 tidak disertakan).
 - Umumnya terdiri dari 3.600.000 data latih dan 400.000 data uji.
 - Kolom: `label` (1 = negatif, 2 = positif), `title`, dan `text`.
 - Notebook memberi nama kolom secara manual lewat `.toDF("label", "title", "text")`.
 
-> **Catatan header:** `main.ipynb` membaca `train.csv` dengan `header=True` dan `test.csv` dengan `header=False`. Pastikan file hasil unduhan sesuai dengan itu. Jika `train.csv` kamu tidak memiliki baris header, ubah menjadi `header=False` agar baris pertama tidak terbuang.
+> **Catatan header:** `main.ipynb` membaca `train.csv` dengan `header=True` dan `test.csv` dengan `header=False`. Pastikan file hasil unduhan sesuai dengan itu. Jika `train.csv` kamu tidak memiliki baris header, ubah menjadi `header=False` agar baris pertama tidak terbuang. Indikasinya: output notebook melaporkan 3.599.999 baris latih, padahal dataset berisi 3.600.000 baris.
 
 ## Troubleshooting
 
 **`JAVA_HOME is not set` / Java tidak ditemukan**
 Pasang JDK 17 atau 21 dan pastikan `java -version` berjalan. Di Windows, jika masih bermasalah, *uncomment* sel pertama di `main.ipynb` dan isi variabel `JAVA` dengan path JDK kamu.
+
+**`ModuleNotFoundError: No module named 'pyspark'`**
+Instalasi di sel pertama belum selesai atau kernel belum di-restart. Jalankan ulang sel pertama, *restart kernel*, lalu jalankan dari atas. Pastikan kernel yang dipilih adalah Python yang sama dengan yang dipakai saat instalasi.
 
 **`OutOfMemoryError` / Spark berjalan sangat lambat**
 - Tutup aplikasi lain yang memakan RAM.
@@ -179,10 +129,7 @@ Pasang JDK 17 atau 21 dan pastikan `java -version` berjalan. Di Windows, jika ma
 - Arahkan direktori sementara Spark ke disk yang lega dengan meng-*uncomment* baris `os.makedirs(...)` dan `.config("spark.local.dir", ...)` di sel inisialisasi.
 
 **`Path does not exist: datasets/train.csv`**
-Folder `datasets/` belum dibuat atau notebook dijalankan dari direktori yang salah. Jalankan Jupyter dari root project dan cek isi `datasets/`.
+Folder `datasets/` belum dibuat, atau notebook dibuka dari folder yang salah. Buka folder project (bukan folder induknya) dan cek isi `datasets/`.
 
 **`NameError: name 'spark' is not defined` / `'sc' is not defined`**
 Sel inisialisasi belum dijalankan. Jalankan ulang dari atas, atau gunakan *Restart & Run All*.
-
-**Error versi Python / PySpark**
-Pastikan kernel Jupyter memakai virtual environment `.venv` tempat dependensi terpasang, bukan Python global.
